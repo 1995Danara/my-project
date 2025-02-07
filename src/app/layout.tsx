@@ -7,8 +7,14 @@ const queryClient = new QueryClient()
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <WagmiProvider config={Client}>
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-    </WagmiProvider>
+    <html lang="en">
+      <body>
+        <WagmiProvider config={Client}>
+          <QueryClientProvider client={queryClient}>
+            {children}
+          </QueryClientProvider>
+        </WagmiProvider>
+      </body>
+    </html>
   )
 }
