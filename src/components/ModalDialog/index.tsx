@@ -10,6 +10,28 @@ export const ModalDialog = ({
   wrongNetwork,
   onSwitchNetwork,
 }: ModalDialogProps) => {
+  const modalRender = () => {
+    if (wrongNetwork) {
+      return (
+        <>
+          <p>Wrong network</p>
+          <Button variant="contained" onClick={onSwitchNetwork}>
+            Switch Network
+          </Button>
+        </>
+      )
+    }
+    if (address) {
+      return (
+        <>
+          <p>{address}</p>
+          <Button variant="contained" onClick={onDisconnect}>
+            Disconnect
+          </Button>
+        </>
+      )
+    }
+  }
   return (
     <Modal open={open} onClose={onClose}>
       <Box
@@ -26,23 +48,7 @@ export const ModalDialog = ({
           minWidth: "300px",
         }}
       >
-        {wrongNetwork ? (
-          <>
-            <p>Wrong network</p>
-            <Button variant="contained" onClick={onSwitchNetwork}>
-              Switch Network
-            </Button>
-          </>
-        ) : (
-          address && (
-            <>
-              <p>{address}</p>
-              <Button variant="contained" onClick={onDisconnect}>
-                Disconnect
-              </Button>
-            </>
-          )
-        )}
+        {modalRender()}
       </Box>
     </Modal>
   )
