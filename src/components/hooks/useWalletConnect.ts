@@ -1,48 +1,43 @@
-import { useAccount, useConnect, useDisconnect, useSwitchChain } from "wagmi"
-import { injected } from "wagmi/connectors"
-import { sepolia } from "wagmi/chains"
-import { useState, useEffect } from "react"
+import { useAccount } from "wagmi"
+import { useWalletMutation } from "./useWalletMutation"
 import { useIsWrongNetwork } from "./useWrongNetwork"
 
-export const useWalletConnect = () => {
+export const useWalletConnect = (
+  onConnect: () => void,
+  onDisconnect: () => void,
+) => {
   const { address, isConnected } = useAccount()
-  const { connect } = useConnect()
-  const { disconnect } = useDisconnect()
-  const { switchChain } = useSwitchChain()
 
   const isWrongNetwork = useIsWrongNetwork()
-
-  const [isModal, setIsModal] = useState(false)
-
-  const [isConnecting, setIsConnecting] = useState(false)
+  const { connectMutation, switchNetworkMutation, disconnectMutation } =
+    useWalletMutation(onConnect, onDisconnect)
 
   const handleConnect = async () => {
-    if (isConnecting) return
+    onConnect()
     try {
-      setIsModal(true)
-      setIsConnecting(true)
-      await connect({ connector: injected() })
+      await connectMutation.mutateAsync()
     } catch (error) {
-      console.error("Ошибка при подключении:", error)
+      console.error("Connection error:", error)
     }
   }
 
-  const handleDisconnect = () => {
-    disconnect()
-    setIsModal(false)
-  }
-
-  const handleSwitchNetwork = () => {
-    if (switchChain) {
-      switchChain({ chainId: sepolia.id })
+  const handleDisconnect = async () => {
+    onConnect()
+    try {
+      await disconnectMutation.mutateAsync()
+    } catch (error) {
+      console.error("Shutdown error:", error)
     }
   }
 
-  useEffect(() => {
-    if (isConnected && !isConnecting) {
-      setIsModal(false)
+  const handleSwitchNetwork = async () => {
+    onConnect()
+    try {
+      await switchNetworkMutation.mutateAsync()
+    } catch (error) {
+      console.error("Network switching error:", error)
     }
-  }, [isConnected, isConnecting])
+  }
 
   return {
     address,
@@ -51,7 +46,5 @@ export const useWalletConnect = () => {
     handleConnect,
     handleDisconnect,
     handleSwitchNetwork,
-    isModal,
-    setIsModal,
   }
 }

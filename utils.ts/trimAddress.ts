@@ -1,5 +1,7 @@
+import { Address } from "viem"
+
 export const trimAddress = (
-  address: string,
+  address: Address,
   start: number = 7,
   end: number = 5,
 ) => {

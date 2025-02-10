@@ -1,11 +1,17 @@
 "use client"
+import { useState } from "react"
 import { Box } from "@mui/material"
 import { Button } from "@mui/material"
-import { ModalDialog } from "../ModalDialog"
 import { useWalletConnect } from "../hooks/useWalletConnect"
-import { trimAddress } from "../utilts.ts/trimAddress"
+
+import { ModalDialog } from "../ModalDialog"
+import { trimAddress } from "../../../utils.ts/trimAddress"
 
 export const ButtonConnectWallet = () => {
+  const [isModal, setIsModal] = useState(false)
+  const onConnect = () => setIsModal(false)
+  const onDisconnect = () => setIsModal(false)
+
   const {
     address,
     isConnected,
@@ -13,9 +19,7 @@ export const ButtonConnectWallet = () => {
     handleConnect,
     handleDisconnect,
     handleSwitchNetwork,
-    isModal,
-    setIsModal,
-  } = useWalletConnect()
+  } = useWalletConnect(onConnect, onDisconnect)
 
   const getButtonProps = () => {
     switch (true) {

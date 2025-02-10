@@ -1,7 +1,8 @@
 import { useAccount } from "wagmi"
-import { sepolia } from "wagmi/chains"
+
+import { TARGET_NETWORK_ID } from "../../../networkConfig"
 
 export const useIsWrongNetwork = () => {
   const { chain } = useAccount()
-  return chain?.id !== sepolia.id
+  return chain?.id !== TARGET_NETWORK_ID
 }
