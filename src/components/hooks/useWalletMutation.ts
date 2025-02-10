@@ -1,16 +1,9 @@
-import { TARGET_NETWORK_ID } from "../../../networkConfig"
 import { useMutation } from "@tanstack/react-query"
 import { injected } from "wagmi/connectors"
-import { useConnect, useDisconnect, useSwitchChain } from "wagmi"
+import { useConnect } from "wagmi"
 
-export const useWalletMutation = (
-  onConnect: () => void,
-  onDisconnect: () => void,
-) => {
+export const useWalletMutation = (onConnect: () => void) => {
   const { connect } = useConnect()
-  const { disconnect } = useDisconnect()
-  const { switchChain } = useSwitchChain()
-
   const connectMutation = useMutation({
     mutationFn: async () => {
       await connect({ connector: injected() })
@@ -23,31 +16,7 @@ export const useWalletMutation = (
       onConnect()
     },
   })
-
-  const switchNetworkMutation = useMutation({
-    mutationFn: async () => {
-      if (switchChain) {
-        await switchChain({ chainId: TARGET_NETWORK_ID })
-      }
-    },
-    onSuccess: () => {},
-    onError: (error: Error) => {
-      console.error("Network switching error:", error)
-    },
-  })
-  const disconnectMutation = useMutation({
-    mutationFn: async () => {
-      await disconnect()
-      onDisconnect()
-    },
-    onSuccess: () => {},
-    onError: (error: Error) => {
-      console.error("Shutdown error:", error)
-    },
-  })
   return {
     connectMutation,
-    switchNetworkMutation,
-    disconnectMutation,
   }
 }

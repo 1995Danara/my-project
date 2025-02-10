@@ -17,11 +17,19 @@ export const ButtonConnectWallet = () => {
     isConnected,
     isWrongNetwork,
     handleConnect,
+    isConnecting,
     handleDisconnect,
     handleSwitchNetwork,
   } = useWalletConnect(onConnect, onDisconnect)
 
   const getButtonProps = () => {
+    if (isConnecting) {
+      return {
+        text: "Wallet conntecting....",
+        onClick: undefined,
+        disabled: true,
+      }
+    }
     switch (true) {
       case !isConnected:
         return {
