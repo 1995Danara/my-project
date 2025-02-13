@@ -6,10 +6,11 @@ import { useIsWrongNetwork } from "../hooks/useWrongNetwork"
 export const TokenBalance = () => {
   const { isConnected } = useAccount()
   const isWrongNetwork = useIsWrongNetwork()
+  const tokenAddress = process.env.NEXT_PUBLIC_ERC20_TOKEN_ADDRESS
   const { data: balance } = useReadContract({
     ...ContractConfig,
     functionName: "balanceOf",
-    args: ["0xCaD8610808Ba58c03f21F9Ecd3b12D5A26D58760"],
+    args: [tokenAddress],
   })
   if (isConnected && !isWrongNetwork) {
     {

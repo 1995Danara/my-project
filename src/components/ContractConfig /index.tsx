@@ -1,5 +1,5 @@
 export const ContractConfig = {
-  address: "0xCaD8610808Ba58c03f21F9Ecd3b12D5A26D58760" as `0x${string}`,
+  address: process.env.NEXT_PUBLIC_ERC20_TOKEN_ADDRESS as `0x${string}`,
   abi: [
     {
       type: "function",
