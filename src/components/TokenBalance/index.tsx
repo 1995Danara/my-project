@@ -1,0 +1,14 @@
+"use client"
+import { useReadContract, useAccount } from "wagmi"
+import { ContractConfig } from "../ContractConfig "
+import { Box } from "@mui/material"
+
+export const TokenBalance = () => {
+  const { isConnected } = useAccount()
+  const { data: balance } = useReadContract({
+    ...ContractConfig,
+    functionName: "balanceOf",
+    args: ["0xCaD8610808Ba58c03f21F9Ecd3b12D5A26D58760"],
+  })
+  if (isConnected) return <Box>Balance: {balance?.toString()}</Box>
+}
