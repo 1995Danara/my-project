@@ -2,8 +2,8 @@
 import { useState } from "react"
 import { Box } from "@mui/material"
 import { Button } from "@mui/material"
-import { useWalletConnect } from "../hooks/useWalletConnect"
 
+import { useWalletConnect } from "../hooks/useWalletConnect"
 import { ModalDialog } from "../ModalDialog"
 import { trimAddress } from "../../../utils.ts/trimAddress"
 

@@ -1,21 +1,22 @@
 "use client"
 import React from "react"
 import { useAccount, useBalance } from "wagmi"
+import { Box, Typography } from "@mui/material"
+
 import { useIsWrongNetwork } from "../hooks/useWrongNetwork"
 import { TARGET_NETWORK_ID } from "../../../networkConfig"
-import { Box, Typography } from "@mui/material"
-import { formatUnits } from "viem"
+import { formatEthBalance } from "../../../utils.ts/formatters"
+
 export const Balance = () => {
   const { address, isConnected } = useAccount()
   const isWrongNetwork = useIsWrongNetwork()
+
   const { data: balance } = useBalance({
     address,
     chainId: TARGET_NETWORK_ID,
   })
 
-  const formattedBalance = balance
-    ? `${Number(formatUnits(balance.value, 18)).toFixed(4)} ETH`
-    : "N/A"
+  const formattedBalance = formatEthBalance(balance?.value)
 
   if (isConnected && !isWrongNetwork) {
     return (

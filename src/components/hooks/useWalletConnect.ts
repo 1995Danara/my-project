@@ -1,8 +1,9 @@
 import { useAccount } from "wagmi"
+import { useDisconnect, useSwitchChain } from "wagmi"
+
 import { useWalletMutation } from "./useWalletMutation"
 import { useIsWrongNetwork } from "./useWrongNetwork"
 import { TARGET_NETWORK_ID } from "../../../networkConfig"
-import { useDisconnect, useSwitchChain } from "wagmi"
 
 export const useWalletConnect = (
   onConnect: () => void,
