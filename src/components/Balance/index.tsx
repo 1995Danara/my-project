@@ -5,7 +5,7 @@ import { Box, Typography } from "@mui/material"
 
 import { useIsWrongNetwork } from "../hooks/useWrongNetwork"
 import { TARGET_NETWORK_ID } from "../../../networkConfig"
-import { formatEthBalance } from "../../../utils.ts/formatters"
+import { formatNumber } from "../../../utils.ts/formatters"
 
 export const Balance = () => {
   const { address, isConnected } = useAccount()
@@ -16,7 +16,7 @@ export const Balance = () => {
     chainId: TARGET_NETWORK_ID,
   })
 
-  const formattedBalance = formatEthBalance(balance?.value)
+  const formattedBalance = formatNumber(balance?.value)
 
   if (isConnected && !isWrongNetwork) {
     return (

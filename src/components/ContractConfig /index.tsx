@@ -1,6 +1,8 @@
 import { erc20Abi } from "viem"
 
+import { TOKEN_ADDRESS } from "../../../utils.ts/constans"
+
 export const ContractConfig = {
-  address: process.env.NEXT_PUBLIC_ERC20_TOKEN_ADDRESS as `0x${string}`,
+  address: TOKEN_ADDRESS,
   abi: erc20Abi,
 }

@@ -1,12 +1,27 @@
 import { formatUnits } from "viem"
 
-export const formatEthBalance = (value: bigint | undefined) => {
-  if (!value) return "N/A"
+type FormatNumberOptions = {
+  decimals?: number
+  locale?: string
+  minFractionDigits?: number
+  maxFractionDigits?: number
+}
 
-  const eth = Number(formatUnits(value, 18))
+export const formatNumber = (
+  value: bigint | undefined,
+  {
+    decimals = 18,
+    locale = "en-US",
+    minFractionDigits = 4,
+    maxFractionDigits = 4,
+  }: FormatNumberOptions = {},
+): string | null => {
+  if (value === undefined) return null
 
-  return `${new Intl.NumberFormat("en-US", {
-    minimumFractionDigits: 4,
-    maximumFractionDigits: 4,
-  }).format(eth)} ETH`
+  const number = Number(formatUnits(value, decimals))
+
+  return new Intl.NumberFormat(locale, {
+    minimumFractionDigits: minFractionDigits,
+    maximumFractionDigits: maxFractionDigits,
+  }).format(number)
 }
