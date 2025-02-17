@@ -3,7 +3,7 @@ import { useDisconnect, useSwitchChain } from "wagmi"
 
 import { useWalletMutation } from "./useWalletMutation"
 import { useIsWrongNetwork } from "./useWrongNetwork"
-import { TARGET_NETWORK_ID } from "../../../networkConfig"
+import { TARGET_NETWORK_ID } from "networkConfig"
 
 export const useWalletConnect = (
   onConnect: () => void,

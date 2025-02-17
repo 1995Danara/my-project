@@ -2,7 +2,8 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { WagmiProvider } from "wagmi"
-import { Client } from "../../components/Client"
+
+import { Client } from "@/Client"
 
 const queryClient = new QueryClient()
 

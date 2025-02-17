@@ -2,9 +2,9 @@
 import { useReadContract, useAccount } from "wagmi"
 import { Box } from "@mui/material"
 
-import { useIsWrongNetwork } from "../hooks/useWrongNetwork"
-import { ContractConfig } from "../ContractConfig "
-import { TOKEN_ADDRESS } from "../../../utils.ts/constans"
+import { useIsWrongNetwork } from "@/hooks/useWrongNetwork"
+import { ContractConfig } from "@/ContractConfig "
+import { TOKEN_ADDRESS } from "utils/constans"
 
 export const TokenBalance = () => {
   const { isConnected } = useAccount()

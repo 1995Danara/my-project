@@ -1,7 +1,8 @@
-import { ButtonConnectWallet } from "@/components/ButtonConnectWallet"
 import { Box, Typography } from "@mui/material"
-import { Balance } from "@/components/Balance"
-import { TokenBalance } from "@/components/TokenBalance"
+
+import { ButtonConnectWallet } from "@/ButtonConnectWallet"
+import { Balance } from "@/Balance"
+import { TokenBalance } from "@/TokenBalance"
 
 export function HomePage() {
   return (
