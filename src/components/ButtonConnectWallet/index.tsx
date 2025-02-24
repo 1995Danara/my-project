@@ -1,26 +1,22 @@
 "use client"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Box } from "@mui/material"
-import { Button } from "@mui/material"
+import { Button, Typography } from "@mui/material"
 
-import { useWalletConnect } from "@/hooks/useWalletConnect"
-import { ModalDialog } from "@/ModalDialog"
-import { trimAddress } from "utils/trimAddress"
+import { useWalletConnect } from "src/hooks/useWalletConnect"
+import { WalletDialog } from "@components/WalletDialog"
+import { trimAddress } from "src/utils/trimAddress"
 
-export const ButtonConnectWallet = () => {
-  const [isModal, setIsModal] = useState(false)
-  const onConnect = () => setIsModal(false)
-  const onDisconnect = () => setIsModal(false)
+export const ButtonConnectWallet = ({ showTitle = true }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isClient, setIsClient] = useState(false)
 
-  const {
-    address,
-    isConnected,
-    isWrongNetwork,
-    handleConnect,
-    isConnecting,
-    handleDisconnect,
-    handleSwitchNetwork,
-  } = useWalletConnect(onConnect, onDisconnect)
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
+  const { address, isConnected, isWrongNetwork, handleConnect, isConnecting } =
+    useWalletConnect()
 
   const getButtonProps = () => {
     if (isConnecting) {
@@ -39,31 +35,38 @@ export const ButtonConnectWallet = () => {
       case isWrongNetwork:
         return {
           text: "Wrong network",
-          onClick: () => setIsModal(true),
+          onClick: () => setIsModalOpen(true),
         }
       default:
         return {
           text: trimAddress(address!),
-          onClick: () => setIsModal(true),
+          onClick: () => setIsModalOpen(true),
         }
     }
   }
 
-  const { text, onClick } = getButtonProps()
+  const { text, onClick, disabled } = getButtonProps()
 
+  if (!isClient) {
+    return null
+  }
   return (
     <Box>
-      <Button variant="contained" onClick={onClick}>
+      {showTitle && (
+        <Typography variant="h5">
+          {isConnected ? "Connected" : "Connect Wallet"}
+        </Typography>
+      )}
+      <Button
+        size="large"
+        variant="contained"
+        color="secondary"
+        onClick={onClick}
+        disabled={disabled}
+      >
         {text}
       </Button>
-      <ModalDialog
-        open={isModal}
-        onClose={() => setIsModal(false)}
-        wrongNetwork={isWrongNetwork}
-        onSwitchNetwork={handleSwitchNetwork}
-        onDisconnect={handleDisconnect}
-        address={address}
-      />
+      <WalletDialog open={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </Box>
   )
 }
