@@ -5,7 +5,7 @@ import { Box, Typography } from "@mui/material"
 
 import { useIsWrongNetwork } from "src/hooks/useWrongNetwork"
 import { TARGET_NETWORK_ID } from "networkConfig"
-import { formatNumber } from "src/utils/formatters"
+import { formatNumber } from "@utils/formatters"
 
 export const Balance = () => {
   const { address, isConnected } = useAccount()

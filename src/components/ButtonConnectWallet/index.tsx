@@ -53,7 +53,7 @@ export const ButtonConnectWallet = ({ showTitle = true }) => {
   return (
     <Box>
       {showTitle && (
-        <Typography variant="h5">
+        <Typography variant="h5" sx={{ fontSize: "32px", fontWeight: "bold" }}>
           {isConnected ? "Connected" : "Connect Wallet"}
         </Typography>
       )}

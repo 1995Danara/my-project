@@ -1,14 +1,9 @@
 "use client"
-import {
-  AppBar,
-  Toolbar,
-  Box,
-  IconButton,
-  Typography,
-  useTheme,
-} from "@mui/material"
+import { AppBar, Toolbar, Box, Typography, useTheme } from "@mui/material"
 
+import SvgIcon from "@mui/material/SvgIcon"
 import { ButtonConnectWallet } from "@components/ButtonConnectWallet"
+import Wallet from "@assets/icons/wallet_icon.svg"
 
 export const Header = () => {
   const theme = useTheme()
@@ -34,7 +29,7 @@ export const Header = () => {
         </Typography>
         <Box sx={{ display: "flex", alignItems: "center", gap: 0 }}>
           <ButtonConnectWallet showTitle={false} />
-          <IconButton
+          <SvgIcon
             sx={{
               backgroundColor: theme.palette.error.main,
               width: "50px",
@@ -45,8 +40,8 @@ export const Header = () => {
               padding: 0,
               borderRadius: 3,
             }}
-          />
-          <IconButton
+          ></SvgIcon>
+          <SvgIcon
             sx={{
               backgroundColor: theme.palette.common.white,
               borderRadius: "50%",
@@ -58,7 +53,7 @@ export const Header = () => {
               padding: 0,
               marginLeft: "12px",
             }}
-          />
+          ></SvgIcon>
         </Box>
       </Toolbar>
     </AppBar>
