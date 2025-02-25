@@ -3,12 +3,13 @@ import { useEffect, useState } from "react"
 import { Box } from "@mui/material"
 import { Button, Typography } from "@mui/material"
 
-import { useWalletConnect } from "src/hooks/useWalletConnect"
+import { useWalletConnect } from "@hooks/useWalletConnect"
 import { WalletDialog } from "@components/WalletDialog"
-import { trimAddress } from "src/utils/trimAddress"
+import { trimAddress } from "@utils/trimAddress"
 
 export const ButtonConnectWallet = ({ showTitle = true }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
+
   const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {

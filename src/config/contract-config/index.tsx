@@ -1,6 +1,6 @@
 import { erc20Abi } from "viem"
 
-import { CONFIG } from "src/utils/constans"
+import { CONFIG } from "@utils/constans"
 
 export const ContractConfig = {
   address: CONFIG.TOKEN_ADDRESS,

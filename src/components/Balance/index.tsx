@@ -3,7 +3,7 @@ import React from "react"
 import { useAccount, useBalance } from "wagmi"
 import { Box, Typography } from "@mui/material"
 
-import { useIsWrongNetwork } from "src/hooks/useWrongNetwork"
+import { useIsWrongNetwork } from "@hooks/useWrongNetwork"
 import { TARGET_NETWORK_ID } from "networkConfig"
 import { formatNumber } from "@utils/formatters"
 
