@@ -4,6 +4,7 @@ import { Button, Modal, Box, Typography } from "@mui/material"
 import { WalletDialogProps } from "./interface"
 import { useWalletConnect } from "@hooks/useWalletConnect"
 import { trimAddress } from "@utils/trimAddress"
+import Person from "@assets/icons/person_icon.svg"
 
 export const WalletDialog = ({ open, onClose }: WalletDialogProps) => {
   const {
@@ -38,12 +39,23 @@ export const WalletDialog = ({ open, onClose }: WalletDialogProps) => {
         return (
           <>
             <Button
-              variant="contained"
-              color="secondary"
+              variant="outlined"
+              color="error"
               onClick={handleSwitchNetwork}
+              sx={{ marginBottom: "16px" }}
             >
               Switch Network
             </Button>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginBottom: "16px",
+              }}
+            >
+              <Person />
+            </Box>
             <p>{trimAddress(address)}</p>
             <Button
               variant="contained"

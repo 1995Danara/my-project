@@ -16,7 +16,7 @@ export const ButtonConnectWallet = ({ showTitle = true }) => {
     setIsClient(true)
   }, [])
 
-  const { address, isConnected, isWrongNetwork, handleConnect, isConnecting } =
+  const { address, isConnected, isWrongNetwork, isConnecting } =
     useWalletConnect()
 
   const getButtonProps = () => {
@@ -31,7 +31,7 @@ export const ButtonConnectWallet = ({ showTitle = true }) => {
       case !isConnected:
         return {
           text: "Connect Wallet",
-          onClick: handleConnect,
+          onClick: () => setIsModalOpen(true),
         }
       case isWrongNetwork:
         return {
