@@ -4,6 +4,7 @@ import { AppBar, Toolbar, Box, Typography, useTheme } from "@mui/material"
 import SvgIcon from "@mui/material/SvgIcon"
 import { ButtonConnectWallet } from "@components/ButtonConnectWallet"
 import Wallet from "@assets/icons/wallet_icon.svg"
+import Person from "@assets/icons/person_icon.svg"
 
 export const Header = () => {
   const theme = useTheme()
@@ -40,7 +41,9 @@ export const Header = () => {
               padding: 0,
               borderRadius: 3,
             }}
-          ></SvgIcon>
+          >
+            <Wallet />
+          </SvgIcon>
           <SvgIcon
             sx={{
               backgroundColor: theme.palette.common.white,
@@ -53,7 +56,9 @@ export const Header = () => {
               padding: 0,
               marginLeft: "12px",
             }}
-          ></SvgIcon>
+          >
+            <Person />
+          </SvgIcon>
         </Box>
       </Toolbar>
     </AppBar>
