@@ -1,23 +1,24 @@
 import { useAccount } from "wagmi"
-import { useWalletMutation } from "./useWalletMutation"
-import { useIsWrongNetwork } from "./useWrongNetwork"
-import { TARGET_NETWORK_ID } from "../../../networkConfig"
 import { useDisconnect, useSwitchChain } from "wagmi"
 
+import { useWalletMutation } from "./useWalletMutation"
+import { useIsWrongNetwork } from "./useWrongNetwork"
+import { TARGET_NETWORK_ID } from "networkConfig"
+
 export const useWalletConnect = (
-  onConnect: () => void,
-  onDisconnect: () => void,
+  onConnect?: () => void,
+  onDisconnect?: () => void,
 ) => {
   const { address, isConnected } = useAccount()
   const { disconnect } = useDisconnect()
   const { switchChain } = useSwitchChain()
   const isWrongNetwork = useIsWrongNetwork()
-  const { connectMutation } = useWalletMutation(onConnect)
+  const { connectMutation } = useWalletMutation(onConnect ?? (() => {}))
 
   const isConnecting = connectMutation.isPending
 
   const handleConnect = async () => {
-    onConnect()
+    if (onConnect) onConnect()
     try {
       await connectMutation.mutateAsync()
     } catch (error) {
@@ -27,7 +28,7 @@ export const useWalletConnect = (
   const handleDisconnect = async () => {
     try {
       await Promise.resolve(disconnect())
-      onDisconnect()
+      if (onDisconnect) onDisconnect()
     } catch (error) {
       console.error("Shutdown error:", error)
     }

@@ -1,6 +1,6 @@
 import { useAccount } from "wagmi"
 
-import { TARGET_NETWORK_ID } from "../../../networkConfig"
+import { TARGET_NETWORK_ID } from "networkConfig"
 
 export const useIsWrongNetwork = () => {
   const { chain } = useAccount()

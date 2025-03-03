@@ -17,7 +17,8 @@
     "react-dom": "^19.0.0",
     "react-toastify": "^11.0.3",
     "viem": "^2.22.21",
-    "wagmi": "^2.14.10"
+    "wagmi": "^2.14.10",
+    "@svgr/webpack": "^8.1.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -26,6 +27,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.1.6",
+    "eslint-import-resolver-alias": "^1.1.2",
     "typescript": "^5"
   }
 }

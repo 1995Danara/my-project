@@ -1,5 +1,10 @@
-import { ButtonConnectWallet } from "@/components/ButtonConnectWallet"
-import { Box, Typography } from "@mui/material"
+import { Box } from "@mui/material"
+
+import { ButtonConnectWallet } from "@components/ButtonConnectWallet"
+import { Balance } from "@components/Balance"
+import { TokenBalance } from "@components/TokenBalance"
+import { Header } from "@components/Header"
+
 export function HomePage() {
   return (
     <Box
@@ -8,8 +13,12 @@ export function HomePage() {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
+        flexDirection: "column",
       }}
     >
+      <Header />
+      <TokenBalance />
+      <Balance />
       <Box
         sx={{
           backgroundColor: "#fff",
@@ -24,12 +33,6 @@ export function HomePage() {
           minHeight: 400,
         }}
       >
-        <Typography
-          variant="h5"
-          sx={{ textTransform: "uppercase", padding: 4 }}
-        >
-          Connect Wallet
-        </Typography>
         <ButtonConnectWallet />
       </Box>
     </Box>

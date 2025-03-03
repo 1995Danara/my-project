@@ -1,0 +1,9 @@
+{
+  "import/resolver": {
+    "node": {
+      "extensions": [".js", ".jsx", ".ts", ".tsx"]
+    }
+  },
+  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "plugins": ["react"]
+}
