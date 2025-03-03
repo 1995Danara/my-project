@@ -19,6 +19,12 @@ export const ButtonConnectWallet = ({ showTitle = true }) => {
   const { address, isConnected, isWrongNetwork, isConnecting } =
     useWalletConnect()
 
+  useEffect(() => {
+    if (address && !isWrongNetwork) {
+      setIsModalOpen(false)
+    }
+  }, [address, isWrongNetwork])
+
   const getButtonProps = () => {
     if (isConnecting) {
       return {
