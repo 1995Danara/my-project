@@ -1,9 +1,11 @@
-import { Box } from "@mui/material"
+"use client"
+import { Box, Typography } from "@mui/material"
 
-import { ButtonConnectWallet } from "@components/ButtonConnectWallet"
 import { Balance } from "@components/Balance"
 import { TokenBalance } from "@components/TokenBalance"
 import { Header } from "@components/Header"
+import { MetaMaskTokenButton } from "@components/MetaMaskTokenButton "
+import { TokenTransfer } from "@components/TokenTransfer"
 
 export function HomePage() {
   return (
@@ -21,7 +23,7 @@ export function HomePage() {
       <Balance />
       <Box
         sx={{
-          backgroundColor: "#fff",
+          backgroundColor: "white",
           padding: 4,
           borderRadius: 2,
           boxShadow: 6,
@@ -31,9 +33,12 @@ export function HomePage() {
           minWidth: 600,
           justifyContent: "center",
           minHeight: 400,
+          gap: 4,
         }}
       >
-        <ButtonConnectWallet />
+        <Typography variant="h6">Transfer of tokens</Typography>
+        <TokenTransfer />
+        <MetaMaskTokenButton />
       </Box>
     </Box>
   )

@@ -1,24 +1,33 @@
 "use client"
 import { useReadContract, useAccount } from "wagmi"
-import { Box } from "@mui/material"
+import { Box, Typography } from "@mui/material"
 
 import { useIsWrongNetwork } from "@hooks/useWrongNetwork"
 import { ContractConfig } from "@config/contract-config"
-import { CONFIG } from "@utils/constans"
+import { formatNumber } from "@utils/formatters"
 
 export const TokenBalance = () => {
-  const { isConnected } = useAccount()
+  const { isConnected, address } = useAccount()
   const isWrongNetwork = useIsWrongNetwork()
 
   const { data: balance } = useReadContract({
-    ...ContractConfig,
+    abi: ContractConfig.abi,
+    address: ContractConfig.address,
     functionName: "balanceOf",
-    args: [CONFIG.TOKEN_ADDRESS],
+    args: [address!],
   })
+
+  const formattedBalance = formatNumber(balance)
 
   if (isConnected && !isWrongNetwork) {
     {
-      return <Box>Balance: {balance?.toString()}</Box>
+      return (
+        <Box>
+          <Typography variant="body1" sx={{ marginRight: "10px" }}>
+            Balance: {formattedBalance}
+          </Typography>
+        </Box>
+      )
     }
   }
 }
