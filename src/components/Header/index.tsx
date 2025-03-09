@@ -26,7 +26,7 @@ export const Header = () => {
         }}
       >
         <Typography variant="h6" sx={{ color: theme.palette.common.white }}>
-          TILES
+          MetaCoin
         </Typography>
         <Box sx={{ display: "flex", alignItems: "center", gap: 0 }}>
           <ButtonConnectWallet showTitle={false} />
