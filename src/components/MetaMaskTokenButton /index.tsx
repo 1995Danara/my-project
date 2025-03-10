@@ -1,18 +1,14 @@
 import { Button } from "@mui/material"
 
-import { ContractConfig } from "@config/contract-config"
-import { addTokenMetaMask } from "@components/AddTokenMetamask"
+import { TokenContractConfig } from "@config/contract-config"
+import { addTokenMetaMask } from "@utils/utils"
 
 export const MetaMaskTokenButton = () => {
-  const tokenAddress = ContractConfig.address
+  const tokenAddress = TokenContractConfig.address
   const tokenSymbol = "MTK"
   const tokenDecimals = 18
   return (
     <Button
-      sx={{
-        borderRadius: "30px",
-      }}
-      size="large"
       variant="contained"
       color="secondary"
       onClick={() => addTokenMetaMask(tokenAddress, tokenDecimals, tokenSymbol)}

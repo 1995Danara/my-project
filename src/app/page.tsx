@@ -2,21 +2,45 @@
 import { Box, Typography, Button } from "@mui/material"
 import { useState } from "react"
 
-import { Balance } from "@components/Balance"
-import { TokenBalance } from "@components/TokenBalance"
 import { Header } from "@components/Header"
 import { MetaMaskTokenButton } from "@components/MetaMaskTokenButton "
 import { TokenTransfer } from "@components/TokenTransfer"
 import { WalletDialog } from "@components/WalletDialog"
 import { useWalletConnect } from "@hooks/useWalletConnect"
+import { TARGET_NETWORK_ID } from "networkConfig"
+import { useBalance, useReadContract } from "wagmi"
+import { formatNumber } from "@utils/formatters"
+import { TokenContractConfig } from "@config/contract-config"
 
 export function HomePage() {
   const { address } = useWalletConnect()
 
   const [openDialog, setOpenDialog] = useState(false)
+  const { data: balance } = useBalance({
+    address,
+    chainId: TARGET_NETWORK_ID,
+  })
+
+  const { data: tokenBalance } = useReadContract({
+    abi: TokenContractConfig.abi,
+    address: TokenContractConfig.address,
+    functionName: "balanceOf",
+    args: [address!],
+  })
+
+  const { data: tokenSymbol } = useReadContract({
+    abi: TokenContractConfig.abi,
+    address: TokenContractConfig.address,
+    functionName: "symbol",
+  })
+
+  const formattedTokenBalance = tokenBalance ? formatNumber(tokenBalance) : ''
+  const formattedTokenSymbol = tokenSymbol ? tokenSymbol : ''
 
   const handleOpenDialog = () => setOpenDialog(true)
   const handleCloseDialog = () => setOpenDialog(false)
+
+  const formattedBalance = balance ? formatNumber(balance.value) : ''
 
   return (
     <Box
@@ -43,9 +67,9 @@ export function HomePage() {
           }}
         >
           <Button
-            size="large"
             variant="contained"
             color="secondary"
+            size="medium"
             onClick={handleOpenDialog}
           >
             Connect Wallet
@@ -53,8 +77,12 @@ export function HomePage() {
         </Box>
       ) : (
         <>
-          <TokenBalance />
-          <Balance />
+          <Typography variant="body1" sx={{ marginRight: "10px" }}>
+              Balance: {formattedBalance} ETH
+          </Typography>
+          <Typography variant="body1" sx={{ marginRight: "10px" }}>
+            Balance: {formattedTokenBalance} {formattedTokenSymbol}
+          </Typography>
           <Box
             sx={{
               backgroundColor: "white",

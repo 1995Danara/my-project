@@ -6,7 +6,7 @@ import { useAccount, useWriteContract, useReadContract } from "wagmi"
 import { parseUnits } from "viem"
 import { Button, Box } from "@mui/material"
 
-import { ContractConfig } from "@config/contract-config"
+import { TokenContractConfig } from "@config/contract-config"
 import { AddressInput } from "@components/Input/AddressInput"
 import { AmountInput } from "@components/Input/AmountInput"
 import { formatNumber } from "@utils/formatters"
@@ -28,22 +28,22 @@ export const TokenTransfer = () => {
   const { writeContract } = useWriteContract()
 
   const { data: balanceData } = useReadContract({
-    address: ContractConfig.address,
-    abi: ContractConfig.abi,
+    address: TokenContractConfig.address,
+    abi: TokenContractConfig.abi,
     functionName: "balanceOf",
     args: [address! as `0x${string}`],
   })
 
   const { data: allowanceData, refetch } = useReadContract({
-    address: ContractConfig.address,
-    abi: ContractConfig.abi,
+    address: TokenContractConfig.address,
+    abi: TokenContractConfig.abi,
     functionName: "allowance",
     args: [address! as `0x${string}`, recipientAddress as `0x${string}`],
   })
 
   const { data: decimals } = useReadContract({
-    abi: ContractConfig.abi,
-    address: ContractConfig.address,
+    abi: TokenContractConfig.abi,
+    address: TokenContractConfig.address,
     functionName: "decimals",
   })
 
@@ -55,8 +55,8 @@ export const TokenTransfer = () => {
     try {
       const amountValue = parseUnits(amount, decimals!)
       await writeContract({
-        address: ContractConfig.address,
-        abi: ContractConfig.abi,
+        address: TokenContractConfig.address,
+        abi: TokenContractConfig.abi,
         functionName: "approve",
         args: [recipientAddress as `0x${string}`, amountValue],
       })
@@ -75,8 +75,8 @@ export const TokenTransfer = () => {
     try {
       const amountValue = parseUnits(amount, decimals!)
       await writeContract({
-        address: ContractConfig.address,
-        abi: ContractConfig.abi,
+        address: TokenContractConfig.address,
+        abi: TokenContractConfig.abi,
         functionName: "transfer",
         args: [recipientAddress as `0x${string}`, amountValue],
       })
@@ -132,10 +132,6 @@ export const TokenTransfer = () => {
         onChange={handleRecipientAddressChange}
       />
       <Button
-        sx={{
-          borderRadius: "30px",
-        }}
-        size="large"
         variant="contained"
         color="secondary"
         onClick={approveStatus ? handleTransfer : handleApprove}

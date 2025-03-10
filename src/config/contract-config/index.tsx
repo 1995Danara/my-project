@@ -2,7 +2,7 @@ import { erc20Abi } from "viem"
 
 import { CONFIG } from "@utils/constans"
 
-export const ContractConfig = {
+export const TokenContractConfig = {
   address: CONFIG.TOKEN_ADDRESS,
   abi: erc20Abi,
 }

@@ -19,12 +19,6 @@ export const CustomInput = ({
         value={value}
         onChange={onChange}
         fullWidth
-        sx={{
-          "& .MuiInputBase-root": {
-            borderRadius: "30px",
-            backgroundColor: COLORS.lightPurple,
-          },
-        }}
       />
     </FormControl>
   )

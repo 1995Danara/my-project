@@ -25,7 +25,6 @@ export const WalletDialog = ({ open, onClose }: WalletDialogProps) => {
               Connect Wallet
             </Typography>
             <Button
-              size="large"
               variant="contained"
               color="secondary"
               onClick={handleConnect}
@@ -40,7 +39,6 @@ export const WalletDialog = ({ open, onClose }: WalletDialogProps) => {
         return (
           <>
             <Button
-              size="large"
               variant="outlined"
               color="error"
               onClick={handleSwitchNetwork}
@@ -60,7 +58,6 @@ export const WalletDialog = ({ open, onClose }: WalletDialogProps) => {
             </Box>
             <p>{trimAddress(address)}</p>
             <Button
-              size="large"
               variant="contained"
               color="secondary"
               onClick={handleDisconnect}
