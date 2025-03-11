@@ -1,10 +1,7 @@
 "use client"
 import { AppBar, Toolbar, Box, Typography, useTheme } from "@mui/material"
-import SvgIcon from "@mui/material/SvgIcon"
 
 import { ConnectWalletButton } from "@components/ConnectWalletButton"
-import Wallet from "@assets/icons/wallet_icon.svg"
-import Person from "@assets/icons/person_icon.svg"
 
 export const Header = () => {
   const theme = useTheme()

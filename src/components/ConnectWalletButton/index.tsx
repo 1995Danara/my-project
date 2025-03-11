@@ -1,15 +1,13 @@
 "use client"
 import { useEffect, useState } from "react"
-import { Button, SvgIcon, useTheme } from "@mui/material"
+import { Button, SvgIcon } from "@mui/material"
 
+import Wallet from "@assets/icons/wallet_icon.svg"
 import { useWalletConnect } from "@hooks/useWalletConnect"
 import { WalletDialog } from "@components/WalletDialog"
 import { trimAddress } from "@utils/trimAddress"
-import Wallet from "@assets/icons/wallet_icon.svg"
 
 export const ConnectWalletButton = () => {
-  const theme = useTheme()
-
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const [isClient, setIsClient] = useState(false)
@@ -64,11 +62,16 @@ export const ConnectWalletButton = () => {
       <Button
         variant="contained"
         color="secondary"
-        sx={{ height: "46px" }}
+        sx={{
+          height: "46px",
+        }}
         onClick={onClick}
         disabled={disabled}
       >
         {text}
+        <SvgIcon>
+          <Wallet />
+        </SvgIcon>
       </Button>
       <WalletDialog open={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </>

@@ -5,6 +5,7 @@ interface TokenTransferState {
   recipientAddress: string
   approveStatus: boolean
   formattedAmount: string | null
+  transactionProgress: boolean
 }
 
 const initialState: TokenTransferState = {
@@ -12,6 +13,7 @@ const initialState: TokenTransferState = {
   recipientAddress: "",
   formattedAmount: null,
   approveStatus: false,
+  transactionProgress: false,
 }
 
 const TokenTransferSlice = createSlice({
@@ -30,6 +32,9 @@ const TokenTransferSlice = createSlice({
     setApproveStatus(state, action: PayloadAction<boolean>) {
       state.approveStatus = action.payload
     },
+    setTransactionProgress(state, action: PayloadAction<boolean>) {
+      state.approveStatus = action.payload
+    },
   },
 })
 export const {
@@ -37,6 +42,7 @@ export const {
   setRecipientAddress,
   setFormattedAmount,
   setApproveStatus,
+  setTransactionProgress,
 } = TokenTransferSlice.actions
 
 export default TokenTransferSlice.reducer

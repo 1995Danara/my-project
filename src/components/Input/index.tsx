@@ -1,21 +1,19 @@
 import { TextField, FormControl } from "@mui/material"
 
-import { CustomInputProps } from "./interface"
-import { COLORS } from "src/theme/muitheme"
+import { InputProps } from "./interface"
 
-export const CustomInput = ({
+export const Input = ({
   value,
   onChange,
   placeholder,
   type,
   fullWidth,
-}: CustomInputProps) => {
+}: InputProps) => {
   return (
     <FormControl fullWidth={fullWidth}>
       <TextField
         placeholder={placeholder}
         type={type}
-        variant="outlined"
         value={value}
         onChange={onChange}
         fullWidth

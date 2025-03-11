@@ -9,7 +9,7 @@ export const COLORS = {
   garkGrey: "#666",
   greyText: "#666",
   white: "#FFF",
-  black: "#000"
+  black: "#000",
 }
 
 export const MuiTheme = createTheme({
@@ -68,11 +68,23 @@ export const MuiTheme = createTheme({
     },
     MuiTextField: {
       styleOverrides: {
+        root: {},
+      },
+    },
+    MuiSvgIcon: {
+      styleOverrides: {
         root: {
-          
-        }
-      }
-    }
+          color: COLORS.white,
+          fontSize: "40px",
+          backgroundColor: "red",
+          borderRadius: "4px",
+          "&:hover": {
+            color: COLORS.white,
+            backgroundColor: COLORS.purple,
+          },
+        },
+      },
+    },
   },
 
   typography: {
