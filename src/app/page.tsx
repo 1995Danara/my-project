@@ -34,13 +34,13 @@ export function HomePage() {
     functionName: "symbol",
   })
 
-  const formattedTokenBalance = tokenBalance ? formatNumber(tokenBalance) : ''
-  const formattedTokenSymbol = tokenSymbol ? tokenSymbol : ''
+  const formattedTokenBalance = tokenBalance ? formatNumber(tokenBalance) : ""
+  const formattedTokenSymbol = tokenSymbol ? tokenSymbol : ""
 
   const handleOpenDialog = () => setOpenDialog(true)
   const handleCloseDialog = () => setOpenDialog(false)
 
-  const formattedBalance = balance ? formatNumber(balance.value) : ''
+  const formattedBalance = balance ? formatNumber(balance.value) : ""
 
   return (
     <Box
@@ -78,7 +78,7 @@ export function HomePage() {
       ) : (
         <>
           <Typography variant="body1" sx={{ marginRight: "10px" }}>
-              Balance: {formattedBalance} ETH
+            Balance: {formattedBalance} ETH
           </Typography>
           <Typography variant="body1" sx={{ marginRight: "10px" }}>
             Balance: {formattedTokenBalance} {formattedTokenSymbol}

@@ -1,115 +1,49 @@
 "use client"
 
-import { useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { useAccount, useWriteContract, useReadContract } from "wagmi"
-import { parseUnits } from "viem"
+import { useEffect, useState } from "react"
 import { Button, Box } from "@mui/material"
 
-import { TokenContractConfig } from "@config/contract-config"
 import { Input } from "@components/Input"
-import {
-  setAmount,
-  setRecipientAddress,
-  setApproveStatus,
-  setTransactionProgress,
-} from "src/store/slices"
-import { RootState } from "@store/index"
+import { useTokenInfo } from "@hooks/useTokenInfo"
+import { useTokenActions } from "@hooks/useTokenActions"
 
 export const TokenTransfer = () => {
-  const dispatch = useDispatch()
-
-  const { amount, recipientAddress, approveStatus, transactionProgress } =
-    useSelector((state: RootState) => state.tokenTransfer)
-
-  const { address, isConnected } = useAccount()
-  const { writeContract } = useWriteContract()
-
-  const { data: balanceData } = useReadContract({
-    address: TokenContractConfig.address,
-    abi: TokenContractConfig.abi,
-    functionName: "balanceOf",
-    args: [address! as `0x${string}`],
-  })
-
-  const { data: allowanceData, refetch } = useReadContract({
-    address: TokenContractConfig.address,
-    abi: TokenContractConfig.abi,
-    functionName: "allowance",
-    args: [address! as `0x${string}`, recipientAddress as `0x${string}`],
-  })
-
-  const { data: decimals } = useReadContract({
-    abi: TokenContractConfig.abi,
-    address: TokenContractConfig.address,
-    functionName: "decimals",
-  })
-
-  const handleApprove = async () => {
-    if (!amount || !recipientAddress || !isConnected || transactionProgress) {
-      return
-    }
-    try {
-      dispatch(setTransactionProgress(true))
-      const amountValue = parseUnits(amount, decimals!)
-      await writeContract({
-        address: TokenContractConfig.address,
-        abi: TokenContractConfig.abi,
-        functionName: "approve",
-        args: [recipientAddress as `0x${string}`, amountValue],
-      })
-      dispatch(setApproveStatus(true))
-      refetch()
-    } catch (error) {
-      console.error("error:", error)
-    } finally {
-      dispatch(setTransactionProgress(false))
-    }
-  }
-
-  const handleTransfer = async () => {
-    if (!amount || !recipientAddress || !isConnected || transactionProgress) {
-      return
-    }
-    try {
-      dispatch(setTransactionProgress(true))
-      const amountValue = parseUnits(amount, decimals!)
-      await writeContract({
-        address: TokenContractConfig.address,
-        abi: TokenContractConfig.abi,
-        functionName: "transfer",
-        args: [recipientAddress as `0x${string}`, amountValue],
-      })
-      dispatch(setApproveStatus(false))
-    } catch (error) {
-      console.error("error:", error)
-    } finally {
-      dispatch(setTransactionProgress(false))
-    }
-  }
+  const [amount, setAmount] = useState("")
+  const [address, setAddress] = useState("")
+  const [isButtonApprove, setIsButtonApprove] = useState(false)
+  const { balanceData, allowanceData, decimals, refetchAllowance } =
+    useTokenInfo(address)
+  const { approve, transfer, transactionProgress } = useTokenActions()
 
   useEffect(() => {
-    if (allowanceData && amount && balanceData && decimals) {
-      const allowance = allowanceData
-      const balanceValue = balanceData
-      const amountValue = parseUnits(amount, decimals)
-
-      if (balanceValue >= amountValue && allowance >= amountValue) {
-        dispatch(setApproveStatus(false))
-      } else {
-        dispatch(setApproveStatus(true))
-      }
+    if (address && amount) {
+      refetchAllowance()
     }
-  }, [balanceData, allowanceData, amount, decimals, dispatch])
+    if (amount && balanceData! > allowanceData!) {
+      setIsButtonApprove(true)
+    } else {
+      setIsButtonApprove(false)
+    }
+  }, [amount, balanceData, decimals, allowanceData, address, refetchAllowance])
 
-  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setAmount(e.target.value))
+  const handleApprove = () => {
+    if (amount && address && decimals) {
+      approve(amount, address, decimals)
+    }
   }
 
-  const handleRecipientAddressChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    dispatch(setRecipientAddress(e.target.value))
+  const handleTransfer = () => {
+    if (amount && address && decimals) {
+      transfer(amount, address, decimals)
+    }
+  }
+
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAmount(e.target.value)
+  }
+
+  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAddress(e.target.value)
   }
 
   return (
@@ -122,16 +56,36 @@ export const TokenTransfer = () => {
         gap: 2,
       }}
     >
-      <Input value={amount} onChange={handleAmountChange} />
-      <Input value={recipientAddress} onChange={handleRecipientAddressChange} />
-      <Button
-        variant="contained"
-        color="secondary"
-        onClick={approveStatus ? handleTransfer : handleApprove}
-        disabled={transactionProgress}
-      >
-        {approveStatus ? "Transfer" : "Approve"}
-      </Button>
+      <Input
+        value={amount}
+        onChange={handleAmountChange}
+        placeholder="Please,enter amount"
+      />
+      <Input
+        value={address}
+        onChange={handleAddressChange}
+        placeholder="Please,enter recipient address"
+      />
+
+      {isButtonApprove ? (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleApprove}
+          disabled={!amount || !address || !decimals}
+        >
+          Approve
+        </Button>
+      ) : (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleTransfer}
+          disabled={!amount || !address || !decimals || !transactionProgress}
+        >
+          Transfer
+        </Button>
+      )}
     </Box>
   )
 }
