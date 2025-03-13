@@ -1,7 +1,7 @@
 import { useAccount, useReadContract } from "wagmi"
 import { TokenContractConfig } from "@config/contract-config"
 
-export const useTokenInfo = (setAddress?: string) => {
+export const useTokenInfo = (recipientAddress?: string) => {
   const { address } = useAccount()
 
   const { data: balanceData } = useReadContract({
@@ -11,11 +11,11 @@ export const useTokenInfo = (setAddress?: string) => {
     args: [address! as `0x${string}`],
   })
 
-  const { data: allowanceData, refetch: refetchAllowance } = useReadContract({
+  const { data: allowance, refetch: refetchAllowance } = useReadContract({
     address: TokenContractConfig.address,
     abi: TokenContractConfig.abi,
     functionName: "allowance",
-    args: [address! as `0x${string}`, setAddress as `0x${string}`],
+    args: [address! as `0x${string}`, recipientAddress as `0x${string}`],
   })
 
   const { data: decimals } = useReadContract({
@@ -24,5 +24,5 @@ export const useTokenInfo = (setAddress?: string) => {
     functionName: "decimals",
   })
 
-  return { balanceData, allowanceData, decimals, refetchAllowance }
+  return { tokenBalance: balanceData, allowance, decimals, refetchAllowance }
 }

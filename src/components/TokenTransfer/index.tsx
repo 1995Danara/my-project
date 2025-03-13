@@ -1,9 +1,9 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Button, Box } from "@mui/material"
+import { Button, Box, TextField } from "@mui/material"
+import { toast, ToastContainer } from "react-toastify"
 
-import { Input } from "@components/Input"
 import { useTokenInfo } from "@hooks/useTokenInfo"
 import { useTokenActions } from "@hooks/useTokenActions"
 
@@ -11,7 +11,7 @@ export const TokenTransfer = () => {
   const [amount, setAmount] = useState("")
   const [address, setAddress] = useState("")
   const [isButtonApprove, setIsButtonApprove] = useState(false)
-  const { balanceData, allowanceData, decimals, refetchAllowance } =
+  const { tokenBalance, allowance, decimals, refetchAllowance } =
     useTokenInfo(address)
   const { approve, transfer, transactionProgress } = useTokenActions()
 
@@ -19,22 +19,40 @@ export const TokenTransfer = () => {
     if (address && amount) {
       refetchAllowance()
     }
-    if (amount && balanceData! > allowanceData!) {
+    if (amount && tokenBalance && allowance && tokenBalance > allowance) {
       setIsButtonApprove(true)
     } else {
       setIsButtonApprove(false)
     }
-  }, [amount, balanceData, decimals, allowanceData, address, refetchAllowance])
+  }, [amount, tokenBalance, allowance, address, refetchAllowance])
 
-  const handleApprove = () => {
+  const handleApprove = async () => {
     if (amount && address && decimals) {
-      approve(amount, address, decimals)
+      try {
+        toast.info("Transaction in progress...")
+        await approve(amount, address, decimals)
+        toast.success("Approve successful!")
+        setAmount("")
+        setAddress("")
+      } catch (error) {
+        console.error("Error during approval:", error)
+        toast.error("Approve failed! ")
+      }
     }
   }
 
-  const handleTransfer = () => {
+  const handleTransfer = async () => {
     if (amount && address && decimals) {
-      transfer(amount, address, decimals)
+      try {
+        toast.info("Transaction in progress...")
+        await transfer(amount, address, decimals)
+        toast.success("Transfer successful!")
+        setAmount("")
+        setAddress("")
+      } catch (error) {
+        console.error("Error during transfer:", error)
+        toast.error("Transfer failed!")
+      }
     }
   }
 
@@ -56,23 +74,23 @@ export const TokenTransfer = () => {
         gap: 2,
       }}
     >
-      <Input
+      <TextField
         value={amount}
         onChange={handleAmountChange}
-        placeholder="Please,enter amount"
+        placeholder="Please, enter amount"
       />
-      <Input
+      <TextField
         value={address}
         onChange={handleAddressChange}
-        placeholder="Please,enter recipient address"
+        placeholder="Please, enter recipient address"
       />
 
-      {isButtonApprove ? (
+      {!isButtonApprove ? (
         <Button
           variant="contained"
           color="primary"
           onClick={handleApprove}
-          disabled={!amount || !address || !decimals}
+          disabled={!amount || !address || transactionProgress}
         >
           Approve
         </Button>
@@ -81,11 +99,12 @@ export const TokenTransfer = () => {
           variant="contained"
           color="primary"
           onClick={handleTransfer}
-          disabled={!amount || !address || !decimals || !transactionProgress}
+          disabled={!amount || !address || transactionProgress}
         >
           Transfer
         </Button>
       )}
+      <ToastContainer position="bottom-left" autoClose={2000} />
     </Box>
   )
 }

@@ -1,6 +1,8 @@
 "use client"
 import { Box, Typography, Button } from "@mui/material"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useQueryClient } from "@tanstack/react-query"
+import { useBlockNumber, useBalance, useReadContract } from "wagmi"
 
 import { Header } from "@components/Header"
 import { MetaMaskTokenButton } from "@components/MetaMaskTokenButton "
@@ -8,15 +10,19 @@ import { TokenTransfer } from "@components/TokenTransfer"
 import { WalletDialog } from "@components/WalletDialog"
 import { useWalletConnect } from "@hooks/useWalletConnect"
 import { TARGET_NETWORK_ID } from "networkConfig"
-import { useBalance, useReadContract } from "wagmi"
 import { formatNumber } from "@utils/formatters"
 import { TokenContractConfig } from "@config/contract-config"
 
 export function HomePage() {
   const { address } = useWalletConnect()
-
   const [openDialog, setOpenDialog] = useState(false)
-  const { data: balance } = useBalance({
+  const queryClient = useQueryClient()
+  const { data: blockNumber } = useBlockNumber({ watch: true })
+  const {
+    data: balance,
+    queryKey,
+    refetch,
+  } = useBalance({
     address,
     chainId: TARGET_NETWORK_ID,
   })
@@ -34,12 +40,18 @@ export function HomePage() {
     functionName: "symbol",
   })
 
-  const formattedTokenBalance = tokenBalance ? formatNumber(tokenBalance) : ""
-  const formattedTokenSymbol = tokenSymbol ? tokenSymbol : ""
+  useEffect(() => {
+    if (blockNumber) {
+      queryClient.invalidateQueries({ queryKey })
+      refetch()
+    }
+  }, [blockNumber, queryClient, queryKey, refetch])
 
   const handleOpenDialog = () => setOpenDialog(true)
   const handleCloseDialog = () => setOpenDialog(false)
 
+  const formattedTokenBalance = tokenBalance ? formatNumber(tokenBalance) : ""
+  const formattedTokenSymbol = tokenSymbol ? tokenSymbol : ""
   const formattedBalance = balance ? formatNumber(balance.value) : ""
 
   return (
