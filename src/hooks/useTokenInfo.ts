@@ -1,6 +1,7 @@
 import { useAccount, useReadContract } from "wagmi"
 
 import { TokenContractConfig } from "@config/contract-config"
+import { formatUnits } from "viem"
 
 export const useTokenInfo = (recipientAddress?: string) => {
   const { address } = useAccount()
@@ -25,9 +26,11 @@ export const useTokenInfo = (recipientAddress?: string) => {
     functionName: "decimals",
   })
 
+  const allowanceFormatted = allowance && decimals ? formatUnits(allowance, decimals) : undefined
+
   return {
     tokenBalance: balanceData,
-    allowance,
+    allowance: allowanceFormatted,
     decimals,
     refetchAllowance,
     refetchTokenBalance,

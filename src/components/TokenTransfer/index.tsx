@@ -24,7 +24,13 @@ export const TokenTransfer = () => {
     if (address && amount) {
       refetchAllowance()
     }
-    if (amount && tokenBalance && allowance && BigInt(amount) < allowance) {
+
+    if (
+      amount &&
+      tokenBalance &&
+      allowance &&
+      Number(amount) <= Number(allowance)
+    ) {
       setIsButtonApprove(true)
     } else {
       setIsButtonApprove(false)
@@ -40,15 +46,7 @@ export const TokenTransfer = () => {
         autoClose: false,
       })
       try {
-        await approve(amount!, address, decimals)
-        toast.update(toastId, {
-          render: "Approve successful!",
-          type: "success",
-          isLoading: false,
-          autoClose: 2000,
-        })
-        setAmount("")
-        setAddress("")
+        await approve(amount, address, toastId)
       } catch (error) {
         console.error("Error during approval:", error)
         toast.update(toastId, {
@@ -57,9 +55,12 @@ export const TokenTransfer = () => {
           isLoading: false,
           autoClose: 2000,
         })
+      } finally {
+        refetchAllowance()
       }
     }
   }
+
   const handleTransfer = async () => {
     if (amount && address && decimals) {
       const toastId = "transferTransaction"
@@ -70,7 +71,7 @@ export const TokenTransfer = () => {
       })
 
       try {
-        await transfer(amount, address, decimals)
+        await transfer(amount, address, toastId)
         toast.update(toastId, {
           render: "Transfer successful!",
           type: "success",
