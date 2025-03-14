@@ -70,6 +70,14 @@ export const WalletDialog = ({ open, onClose }: WalletDialogProps) => {
         return (
           <>
             <p>{address}</p>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <Person />
+            </Box>
             <Button
               variant="contained"
               color="secondary"

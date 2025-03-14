@@ -11,15 +11,20 @@ export const TokenTransfer = () => {
   const [amount, setAmount] = useState("")
   const [address, setAddress] = useState("")
   const [isButtonApprove, setIsButtonApprove] = useState(false)
-  const { tokenBalance, allowance, decimals, refetchAllowance } =
-    useTokenInfo(address)
+  const {
+    tokenBalance,
+    allowance,
+    decimals,
+    refetchAllowance,
+    refetchTokenBalance,
+  } = useTokenInfo(address)
   const { approve, transfer, transactionProgress } = useTokenActions()
 
   useEffect(() => {
     if (address && amount) {
       refetchAllowance()
     }
-    if (amount && tokenBalance && allowance && tokenBalance > allowance) {
+    if (amount && tokenBalance && allowance && BigInt(amount) < allowance) {
       setIsButtonApprove(true)
     } else {
       setIsButtonApprove(false)
@@ -28,30 +33,62 @@ export const TokenTransfer = () => {
 
   const handleApprove = async () => {
     if (amount && address && decimals) {
+      const toastId = "approveTransaction"
+      toast.info("Transaction in progress...", {
+        toastId,
+        isLoading: true,
+        autoClose: false,
+      })
       try {
-        toast.info("Transaction in progress...")
-        await approve(amount, address, decimals)
-        toast.success("Approve successful!")
+        await approve(amount!, address, decimals)
+        toast.update(toastId, {
+          render: "Approve successful!",
+          type: "success",
+          isLoading: false,
+          autoClose: 2000,
+        })
         setAmount("")
         setAddress("")
       } catch (error) {
         console.error("Error during approval:", error)
-        toast.error("Approve failed! ")
+        toast.update(toastId, {
+          render: "Approve failed!",
+          type: "error",
+          isLoading: false,
+          autoClose: 2000,
+        })
       }
     }
   }
-
   const handleTransfer = async () => {
     if (amount && address && decimals) {
+      const toastId = "transferTransaction"
+      toast.info("Transaction in progress...", {
+        toastId,
+        isLoading: true,
+        autoClose: false,
+      })
+
       try {
-        toast.info("Transaction in progress...")
         await transfer(amount, address, decimals)
-        toast.success("Transfer successful!")
+        toast.update(toastId, {
+          render: "Transfer successful!",
+          type: "success",
+          isLoading: false,
+          autoClose: 2000,
+        })
         setAmount("")
         setAddress("")
       } catch (error) {
         console.error("Error during transfer:", error)
-        toast.error("Transfer failed!")
+        toast.update(toastId, {
+          render: "Transfer failed!",
+          type: "error",
+          isLoading: false,
+          autoClose: 2000,
+        })
+      } finally {
+        refetchTokenBalance()
       }
     }
   }
@@ -104,7 +141,7 @@ export const TokenTransfer = () => {
           Transfer
         </Button>
       )}
-      <ToastContainer position="bottom-left" autoClose={2000} />
+      <ToastContainer position="top-right" autoClose={2000} />
     </Box>
   )
 }

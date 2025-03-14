@@ -10,8 +10,7 @@ export const useTokenActions = () => {
 
   const approve = async (amount: string, address: string, decimals: number) => {
     try {
-      setTransactionProgress(true)
-      const amountValue = parseUnits(amount, decimals!)
+      const amountValue = parseUnits(amount, decimals)
       await writeContract({
         address: TokenContractConfig.address,
         abi: TokenContractConfig.abi,
@@ -32,7 +31,7 @@ export const useTokenActions = () => {
   ) => {
     try {
       setTransactionProgress(true)
-      const amountValue = parseUnits(amount, decimals!)
+      const amountValue = parseUnits(amount, decimals)
       await writeContract({
         address: TokenContractConfig.address,
         abi: TokenContractConfig.abi,

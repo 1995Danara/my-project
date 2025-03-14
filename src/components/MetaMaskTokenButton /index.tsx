@@ -1,6 +1,7 @@
 "use client"
 import { Button } from "@mui/material"
 import { useReadContract } from "wagmi"
+
 import { TokenContractConfig } from "@config/contract-config"
 import { addTokenMetaMask } from "@utils/utils"
 
