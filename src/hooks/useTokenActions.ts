@@ -22,7 +22,7 @@ export const useTokenActions = () => {
   const [activeTransactionToastId, setActiveTransactionToastId] = useState("")
 
   useEffect(() => {
-    if (!isWaiting && activeTransactionToastId) {
+    if (!isWaiting) {
       toast.update(activeTransactionToastId, {
         render: "Transaction successful!",
         type: "success",
@@ -31,7 +31,7 @@ export const useTokenActions = () => {
       })
       setActiveTransactionToastId("")
     }
-  }, [isWaiting, activeTransactionToastId])
+  }, [isWaiting])
 
   const approve = async (amount: string, address: string, toastId: string) => {
     if (!decimals) return
