@@ -92,5 +92,6 @@ export const useTokenActions = () => {
       console.error("error:", error)
     }
   }
+
   return { approve, transfer, transactionProgress: isWaiting }
 }

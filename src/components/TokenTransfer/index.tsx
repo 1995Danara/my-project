@@ -24,7 +24,6 @@ export const TokenTransfer = () => {
     if (address && amount) {
       refetchAllowance()
     }
-
     if (
       amount &&
       tokenBalance &&
@@ -64,12 +63,13 @@ export const TokenTransfer = () => {
   const handleTransfer = async () => {
     if (amount && address && decimals) {
       const toastId = "transferTransaction"
-      toast.info("Transaction in progress...", {
-        toastId,
-        isLoading: true,
-        autoClose: false,
-      })
-
+      setTimeout(() => {
+        toast.info("Transaction in progress...", {
+          toastId,
+          isLoading: true,
+          autoClose: false,
+        })
+      }, 200)
       try {
         await transfer(amount, address, toastId)
         toast.update(toastId, {
