@@ -11,7 +11,7 @@ import { WalletDialog } from "@components/WalletDialog"
 import { useWalletConnect } from "@hooks/useWalletConnect"
 import { TARGET_NETWORK_ID } from "networkConfig"
 import { formatNumber } from "@utils/formatters"
-import { TokenContractConfig } from "@config/contract-config"
+import { TOKEN_CONTRACT_CONFIG } from "@config/contract-config"
 
 export function HomePage() {
   const { address } = useWalletConnect()
@@ -28,15 +28,15 @@ export function HomePage() {
   })
 
   const { data: tokenBalance } = useReadContract({
-    abi: TokenContractConfig.abi,
-    address: TokenContractConfig.address,
+    abi: TOKEN_CONTRACT_CONFIG.abi,
+    address: TOKEN_CONTRACT_CONFIG.address,
     functionName: "balanceOf",
     args: [address!],
   })
 
   const { data: tokenSymbol } = useReadContract({
-    abi: TokenContractConfig.abi,
-    address: TokenContractConfig.address,
+    abi: TOKEN_CONTRACT_CONFIG.abi,
+    address: TOKEN_CONTRACT_CONFIG.address,
     functionName: "symbol",
   })
 

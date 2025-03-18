@@ -7,7 +7,7 @@ import {
 import { parseUnits } from "viem"
 import { toast } from "react-toastify"
 
-import { TokenContractConfig } from "@config/contract-config"
+import { TOKEN_CONTRACT_CONFIG } from "@config/contract-config"
 
 export const useTokenActions = () => {
   const { writeContract, data: txData } = useWriteContract()
@@ -15,8 +15,8 @@ export const useTokenActions = () => {
     hash: txData,
   })
   const { data: decimals } = useReadContract({
-    abi: TokenContractConfig.abi,
-    address: TokenContractConfig.address,
+    abi: TOKEN_CONTRACT_CONFIG.abi,
+    address: TOKEN_CONTRACT_CONFIG.address,
     functionName: "decimals",
   })
   const [activeTransactionToastId, setActiveTransactionToastId] = useState("")
@@ -40,8 +40,8 @@ export const useTokenActions = () => {
       const amountValue = parseUnits(amount, decimals)
       await writeContract(
         {
-          address: TokenContractConfig.address,
-          abi: TokenContractConfig.abi,
+          address: TOKEN_CONTRACT_CONFIG.address,
+          abi: TOKEN_CONTRACT_CONFIG.abi,
           functionName: "approve",
           args: [address as `0x${string}`, amountValue],
         },
@@ -72,8 +72,8 @@ export const useTokenActions = () => {
       const amountValue = parseUnits(amount, decimals)
       await writeContract(
         {
-          address: TokenContractConfig.address,
-          abi: TokenContractConfig.abi,
+          address: TOKEN_CONTRACT_CONFIG.address,
+          abi: TOKEN_CONTRACT_CONFIG.abi,
           functionName: "transfer",
           args: [recipientAddress as `0x${string}`, amountValue],
         },

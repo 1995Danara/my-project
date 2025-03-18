@@ -71,22 +71,18 @@ export const MuiTheme = createTheme({
         root: {},
       },
     },
-    MuiSvgIcon: {
+    MuiCheckbox: {
       styleOverrides: {
         root: {
-          color: COLORS.white,
-          fontSize: "40px",
-          backgroundColor: "red",
-          borderRadius: "4px",
-          "&:hover": {
-            color: COLORS.white,
-            backgroundColor: COLORS.purple,
+          borderColor: COLORS.grey,
+          borderRadius: 4,
+          "&.Mui-checked": {
+            color: "green",
           },
         },
       },
     },
   },
-
   typography: {
     fontFamily: ["Urbanist", "sans-serif"].join(","),
     fontSize: 16,

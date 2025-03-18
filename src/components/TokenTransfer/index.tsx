@@ -6,11 +6,12 @@ import { toast, ToastContainer } from "react-toastify"
 
 import { useTokenInfo } from "@hooks/useTokenInfo"
 import { useTokenActions } from "@hooks/useTokenActions"
+import { TokenTransferDialog } from "@components/TokenTransferDialog"
 
 export const TokenTransfer = () => {
   const [amount, setAmount] = useState("")
   const [address, setAddress] = useState("")
-  const [isButtonApprove, setIsButtonApprove] = useState(false)
+  const [openModal, setOpenModal] = useState(false)
   const {
     tokenBalance,
     allowance,
@@ -19,6 +20,11 @@ export const TokenTransfer = () => {
     refetchTokenBalance,
   } = useTokenInfo(address)
   const { approve, transfer, transactionProgress } = useTokenActions()
+  const [isButtonApprove, setIsButtonApprove] = useState(false)
+  const missingAllowance =
+    allowance && Number(amount) > Number(allowance)
+      ? Number(amount) - Number(allowance)
+      : 0
 
   useEffect(() => {
     if (address && amount) {
@@ -123,25 +129,25 @@ export const TokenTransfer = () => {
         placeholder="Please, enter recipient address"
       />
 
-      {!isButtonApprove ? (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleApprove}
-          disabled={!amount || !address || transactionProgress}
-        >
-          Approve
-        </Button>
-      ) : (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleTransfer}
-          disabled={!amount || !address || transactionProgress}
-        >
-          Transfer
-        </Button>
-      )}
+      <Button
+        variant="contained"
+        color="secondary"
+        onClick={() => setOpenModal(true)}
+        disabled={!amount || !address || transactionProgress}
+      >
+        Verify Approval
+      </Button>
+      <TokenTransferDialog
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+        amount={amount}
+        address={address}
+        isButtonApprove={isButtonApprove}
+        handleApprove={handleApprove}
+        handleTransfer={handleTransfer}
+        transactionProgress={transactionProgress}
+        missingAllowance={missingAllowance}
+      />
       <ToastContainer position="top-right" autoClose={2000} />
     </Box>
   )
