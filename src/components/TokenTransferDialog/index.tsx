@@ -61,7 +61,7 @@ export const TokenTransferDialog = ({
               variant="contained"
               color="primary"
               onClick={handleApprove}
-              disabled={transactionProgress || missingAllowance > 0}
+              disabled={transactionProgress}
             >
               Approve
             </Button>
