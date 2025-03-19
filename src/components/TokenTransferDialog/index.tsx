@@ -51,7 +51,7 @@ export const TokenTransferDialog = ({
           />
           <FormControlLabel
             control={<Checkbox checked={isButtonApprove} disabled={true} />}
-            label="Approve"
+            label="Ready for Transfer"
           />
         </Box>
         {missingAllowance > 0 && (
@@ -60,7 +60,7 @@ export const TokenTransferDialog = ({
           </Typography>
         )}
         <Box sx={{ marginTop: 2 }}>
-          {!isButtonApprove && missingAllowance > 0 ? (
+          {!isButtonApprove ? (
             <Button
               variant="contained"
               color="primary"
