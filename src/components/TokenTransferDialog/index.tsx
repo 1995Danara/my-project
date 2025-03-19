@@ -1,27 +1,29 @@
-"use client"
-
 import {
   Modal,
   Box,
-  Button,
+  Typography,
   FormControlLabel,
   Checkbox,
-  Typography,
+  Button,
 } from "@mui/material"
-
-import { TokenTransferDialogProps } from "./interface"
 
 export const TokenTransferDialog = ({
   open,
   onClose,
-  amount,
-  address,
-  handleApprove,
-  handleTransfer,
   isButtonApprove,
   transactionProgress,
   missingAllowance,
-}: TokenTransferDialogProps) => {
+  handleApprove,
+  handleTransfer,
+}: {
+  open: boolean
+  onClose: () => void
+  isButtonApprove: boolean
+  transactionProgress: boolean
+  missingAllowance: number
+  handleApprove: () => void
+  handleTransfer: () => void
+}) => {
   return (
     <Modal open={open} onClose={onClose}>
       <Box
@@ -38,13 +40,7 @@ export const TokenTransferDialog = ({
           minWidth: "300px",
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            gap: 2,
-            flexDirection: "column",
-          }}
-        >
+        <Box sx={{ display: "flex", gap: 2, flexDirection: "column" }}>
           <FormControlLabel
             control={<Checkbox checked={isButtonApprove} disabled={true} />}
             label="Approval Complete"
@@ -65,12 +61,7 @@ export const TokenTransferDialog = ({
               variant="contained"
               color="primary"
               onClick={handleApprove}
-              disabled={
-                !amount ||
-                !address ||
-                transactionProgress ||
-                missingAllowance > 0
-              }
+              disabled={transactionProgress || missingAllowance > 0}
             >
               Approve
             </Button>
@@ -79,7 +70,7 @@ export const TokenTransferDialog = ({
               variant="contained"
               color="primary"
               onClick={handleTransfer}
-              disabled={!amount || !address || transactionProgress}
+              disabled={transactionProgress}
             >
               Transfer
             </Button>

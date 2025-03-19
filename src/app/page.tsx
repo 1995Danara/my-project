@@ -6,7 +6,7 @@ import { useBlockNumber, useBalance, useReadContract } from "wagmi"
 
 import { Header } from "@components/Header"
 import { MetaMaskTokenButton } from "@components/MetaMaskTokenButton "
-import { TokenTransfer } from "@components/TokenTransfer"
+import { TokenTransferForm } from "@components/TokenTransferForm"
 import { WalletDialog } from "@components/WalletDialog"
 import { useWalletConnect } from "@hooks/useWalletConnect"
 import { TARGET_NETWORK_ID } from "networkConfig"
@@ -16,6 +16,7 @@ import { TOKEN_CONTRACT_CONFIG } from "@config/contract-config"
 export function HomePage() {
   const { address } = useWalletConnect()
   const [openDialog, setOpenDialog] = useState(false)
+  const [isDataLoaded, setIsDataLoaded] = useState(false)
   const queryClient = useQueryClient()
   const { data: blockNumber } = useBlockNumber({ watch: true })
   const {
@@ -47,6 +48,12 @@ export function HomePage() {
     }
   }, [blockNumber, queryClient, queryKey, refetch])
 
+  useEffect(() => {
+    if (balance && tokenBalance) {
+      setIsDataLoaded(true)
+    }
+  }, [balance, tokenBalance])
+
   const handleOpenDialog = () => setOpenDialog(true)
   const handleCloseDialog = () => setOpenDialog(false)
 
@@ -54,6 +61,9 @@ export function HomePage() {
   const formattedTokenSymbol = tokenSymbol ? tokenSymbol : ""
   const formattedBalance = balance ? formatNumber(balance.value) : ""
 
+  if (!isDataLoaded) {
+    return <Typography>Loading...</Typography>
+  }
   return (
     <Box
       sx={{
@@ -111,7 +121,7 @@ export function HomePage() {
             }}
           >
             <Typography variant="h6">Transfer of tokens</Typography>
-            <TokenTransfer />
+            <TokenTransferForm />
             <MetaMaskTokenButton />
           </Box>
         </>

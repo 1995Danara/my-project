@@ -1,17 +1,16 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Button, Box, TextField } from "@mui/material"
-import { toast, ToastContainer } from "react-toastify"
+import { toast } from "react-toastify"
 
 import { useTokenInfo } from "@hooks/useTokenInfo"
 import { useTokenActions } from "@hooks/useTokenActions"
-import { TokenTransferDialog } from "@components/TokenTransferDialog"
+import { TokenTransferHandlerProps } from "./interface"
 
-export const TokenTransfer = () => {
-  const [amount, setAmount] = useState("")
-  const [address, setAddress] = useState("")
-  const [openModal, setOpenModal] = useState(false)
+export const TokenTransferHandler = ({
+  address,
+  amount,
+}: TokenTransferHandlerProps) => {
   const {
     tokenBalance,
     allowance,
@@ -84,8 +83,6 @@ export const TokenTransfer = () => {
           isLoading: false,
           autoClose: 2000,
         })
-        setAmount("")
-        setAddress("")
       } catch (error) {
         console.error("Error during transfer:", error)
         toast.update(toastId, {
@@ -100,55 +97,11 @@ export const TokenTransfer = () => {
     }
   }
 
-  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAmount(e.target.value)
+  return {
+    isButtonApprove,
+    transactionProgress,
+    missingAllowance,
+    handleApprove,
+    handleTransfer,
   }
-
-  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAddress(e.target.value)
-  }
-
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        textAlign: "center",
-        justifyContent: "center",
-        gap: 2,
-      }}
-    >
-      <TextField
-        value={amount}
-        onChange={handleAmountChange}
-        placeholder="Please, enter amount"
-      />
-      <TextField
-        value={address}
-        onChange={handleAddressChange}
-        placeholder="Please, enter recipient address"
-      />
-
-      <Button
-        variant="contained"
-        color="secondary"
-        onClick={() => setOpenModal(true)}
-        disabled={!amount || !address || transactionProgress}
-      >
-        Verify Approval
-      </Button>
-      <TokenTransferDialog
-        open={openModal}
-        onClose={() => setOpenModal(false)}
-        amount={amount}
-        address={address}
-        isButtonApprove={isButtonApprove}
-        handleApprove={handleApprove}
-        handleTransfer={handleTransfer}
-        transactionProgress={transactionProgress}
-        missingAllowance={missingAllowance}
-      />
-      <ToastContainer position="top-right" autoClose={2000} />
-    </Box>
-  )
 }
