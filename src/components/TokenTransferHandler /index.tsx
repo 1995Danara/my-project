@@ -27,10 +27,13 @@ export const TokenTransferHandler = ({
       : 0
 
   useEffect(() => {
+    setReadyForTransfer(false)
     if (address && amount) {
       refetchAllowance()
     }
+  }, [amount, address, refetchAllowance])
 
+  useEffect(() => {
     if (
       amount &&
       tokenBalance &&
@@ -38,12 +41,10 @@ export const TokenTransferHandler = ({
       Number(amount) <= Number(allowance)
     ) {
       setApprovalComplete(true)
-      setReadyForTransfer(true)
     } else {
       setApprovalComplete(false)
-      setReadyForTransfer(false)
     }
-  }, [amount, tokenBalance, allowance, address, refetchAllowance])
+  }, [amount, tokenBalance, allowance])
 
   const handleApprove = async () => {
     if (amount && address && decimals) {
