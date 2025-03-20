@@ -72,7 +72,7 @@ export const TokenTransferDialog = ({
               variant="contained"
               color="primary"
               onClick={handleTransfer}
-              disabled={transactionProgress}
+              disabled={transactionProgress || !approvalComplete}
             >
               Transfer
             </Button>
