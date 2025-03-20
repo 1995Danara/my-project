@@ -10,7 +10,8 @@ import {
 export const TokenTransferDialog = ({
   open,
   onClose,
-  isButtonApprove,
+  approvalComplete,
+  readyForTransfer,
   transactionProgress,
   missingAllowance,
   handleApprove,
@@ -18,7 +19,8 @@ export const TokenTransferDialog = ({
 }: {
   open: boolean
   onClose: () => void
-  isButtonApprove: boolean
+  approvalComplete: boolean
+  readyForTransfer: boolean
   transactionProgress: boolean
   missingAllowance: number
   handleApprove: () => void
@@ -42,11 +44,11 @@ export const TokenTransferDialog = ({
       >
         <Box sx={{ display: "flex", gap: 2, flexDirection: "column" }}>
           <FormControlLabel
-            control={<Checkbox checked={isButtonApprove} disabled={true} />}
+            control={<Checkbox checked={approvalComplete} disabled />}
             label="Approval Complete"
           />
           <FormControlLabel
-            control={<Checkbox checked={isButtonApprove} disabled={true} />}
+            control={<Checkbox checked={readyForTransfer} disabled />}
             label="Ready for Transfer"
           />
         </Box>
@@ -56,7 +58,7 @@ export const TokenTransferDialog = ({
           </Typography>
         )}
         <Box sx={{ marginTop: 2 }}>
-          {!isButtonApprove ? (
+          {!approvalComplete ? (
             <Button
               variant="contained"
               color="primary"

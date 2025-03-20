@@ -12,7 +12,8 @@ export const TokenTransferForm = () => {
   const [address, setAddress] = useState("")
   const [openModal, setOpenModal] = useState(false)
   const {
-    isButtonApprove,
+    approvalComplete,
+    readyForTransfer,
     transactionProgress,
     missingAllowance,
     handleApprove,
@@ -66,7 +67,8 @@ export const TokenTransferForm = () => {
           setOpenModal(false)
           resetInputs()
         }}
-        isButtonApprove={isButtonApprove}
+        approvalComplete={approvalComplete}
+        readyForTransfer={readyForTransfer}
         transactionProgress={transactionProgress}
         missingAllowance={missingAllowance}
         handleApprove={handleApprove}

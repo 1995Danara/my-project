@@ -19,7 +19,8 @@ export const TokenTransferHandler = ({
     refetchTokenBalance,
   } = useTokenInfo(address)
   const { approve, transfer, transactionProgress } = useTokenActions()
-  const [isButtonApprove, setIsButtonApprove] = useState(false)
+  const [approvalComplete, setApprovalComplete] = useState(false)
+  const [readyForTransfer, setReadyForTransfer] = useState(false)
   const missingAllowance =
     allowance && Number(amount) > Number(allowance)
       ? Number(amount) - Number(allowance)
@@ -29,15 +30,18 @@ export const TokenTransferHandler = ({
     if (address && amount) {
       refetchAllowance()
     }
+
     if (
       amount &&
       tokenBalance &&
       allowance &&
       Number(amount) <= Number(allowance)
     ) {
-      setIsButtonApprove(true)
+      setApprovalComplete(true)
+      setReadyForTransfer(true)
     } else {
-      setIsButtonApprove(false)
+      setApprovalComplete(false)
+      setReadyForTransfer(false)
     }
   }, [amount, tokenBalance, allowance, address, refetchAllowance])
 
@@ -51,6 +55,7 @@ export const TokenTransferHandler = ({
       })
       try {
         await approve(amount, address, toastId)
+        setApprovalComplete(true)
       } catch (error) {
         console.error("Error during approval:", error)
         toast.update(toastId, {
@@ -83,6 +88,7 @@ export const TokenTransferHandler = ({
           isLoading: false,
           autoClose: 2000,
         })
+        setReadyForTransfer(true)
       } catch (error) {
         console.error("Error during transfer:", error)
         toast.update(toastId, {
@@ -98,7 +104,8 @@ export const TokenTransferHandler = ({
   }
 
   return {
-    isButtonApprove,
+    approvalComplete,
+    readyForTransfer,
     transactionProgress,
     missingAllowance,
     handleApprove,
