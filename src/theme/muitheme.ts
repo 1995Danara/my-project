@@ -6,7 +6,7 @@ export const COLORS = {
   lightPurple: "#EBE9FF",
   lightGrey: "#F2F2F2",
   grey: "#A7A7A7",
-  darkGrey: "#666",
+  garkGrey: "#666",
   greyText: "#666",
   white: "#FFF",
   black: "#000",
@@ -34,6 +34,7 @@ export const MuiTheme = createTheme({
     },
     MuiButton: {
       defaultProps: {
+        size: "small",
         variant: "contained",
         color: "primary",
         disableElevation: true,
@@ -43,7 +44,6 @@ export const MuiTheme = createTheme({
         root: ({ ownerState }) => {
           const isPrimary = ownerState.color === "primary"
           const isLarged = ownerState.size === "large"
-
           return {
             textTransform: "uppercase",
             padding: isLarged ? "12px 32px" : "12px 24px",
@@ -57,10 +57,28 @@ export const MuiTheme = createTheme({
               backgroundColor: isPrimary ? COLORS.darkPurple : COLORS.purple,
             },
             "&:disabled": {
-              color: isPrimary ? COLORS.grey : COLORS.darkGrey,
-              background: `linear-gradient(0deg, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.10) 100%), ${COLORS.lightPurple}`,
+              color: isPrimary ? COLORS.grey : COLORS.garkGrey,
+              background: isPrimary
+                ? "#353141"
+                : `linear-gradient(0deg, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.10) 100%), ${COLORS.lightPurple}`,
             },
           }
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {},
+      },
+    },
+    MuiCheckbox: {
+      styleOverrides: {
+        root: {
+          borderColor: COLORS.grey,
+          borderRadius: 4,
+          "&.Mui-checked": {
+            color: "green",
+          },
         },
       },
     },
